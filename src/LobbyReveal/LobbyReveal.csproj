@@ -5,8 +5,13 @@
         <ImplicitUsings>disable</ImplicitUsings>
         <LangVersion>preview</LangVersion>
         <Nullable>enable</Nullable>
-        <TargetFrameworks>net48;net6.0</TargetFrameworks>
+        <TargetFrameworks>net48</TargetFrameworks>
+        <ApplicationIcon>user-magnify_47867.ico</ApplicationIcon>
     </PropertyGroup>
+
+    <ItemGroup>
+      <Content Include="user-magnify_47867.ico" />
+    </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="Ekko" Version="1.0.3" />

@@ -130,7 +130,8 @@ public class LobbyHandler
                 if (participantsJson?.participants is null)
                     continue;
 
-                var names = participantsJson.participants.Select(x => x.name).ToArray();
+                var names = participantsJson.participants.Select(x => x.game_name + "-" + x.game_tag).ToArray(); // Porofessor
+                // var names = participantsJson.participants.Select(x => x.game_name + "#" + x.game_tag).ToArray(); // OPGG
 
                 if (!_cache.SequenceEqual(names))
                 {

@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
 using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using Ekko;
-using Newtonsoft.Json;
 using Spectre.Console;
 
 namespace LobbyReveal
@@ -20,9 +15,9 @@ namespace LobbyReveal
         private static List<LobbyHandler> _handlers = new List<LobbyHandler>();
         private static bool _update = true;
 
-        public async static Task Main(string[] args)
+        public static Task Main(string[] args)
         {
-            Console.Title = "notepad";
+            Console.Title = "LR";
             var watcher = new LeagueClientWatcher();
             watcher.OnLeagueClient += (clientWatcher, client) =>
             {
@@ -55,11 +50,16 @@ namespace LobbyReveal
                     continue;
                 }
 
-                var region = _handlers[i - 1].GetRegion();
-
-                var link =
-                    $"https://www.op.gg/multisearch/{region ?? Region.EUW}?summoners=" +
+                // OPGG
+                /*var link =
+                    $"https://www.op.gg/multisearch/{_handlers[i - 1].GetRegion() ?? Region.EUW}?summoners=" +
                     HttpUtility.UrlEncode($"{string.Join(",", _handlers[i - 1].GetSummoners())}");
+                */
+                // Porofessor
+                var link =
+                    $"https://porofessor.gg/en/pregame/{(_handlers[i - 1].GetRegion() ?? Region.EUW).ToString().ToLower()}/" +
+                    HttpUtility.UrlEncode($"{string.Join(",", _handlers[i - 1].GetSummoners())}");
+
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
                     Process.Start(link);
@@ -84,16 +84,19 @@ namespace LobbyReveal
                 if (_update)
                 {
                     Console.Clear();
-                    AnsiConsole.Write(new Markup("[u][yellow]https://www.github.com/Riotphobia/LobbyReveal[/][/]")
-                        .Centered());
-                    AnsiConsole.Write(new Markup("[u][blue][b]v1.0.1 - 0xInception[/][/][/]").Centered());
                     Console.WriteLine();
                     Console.WriteLine();
                     for (int i = 0; i < _handlers.Count; i++)
                     {
-                        var link =
+                        // OPGG
+                        /*var link =
                             $"https://www.op.gg/multisearch/{_handlers[i].GetRegion() ?? Region.EUW}?summoners=" +
-                            HttpUtility.UrlEncode($"{string.Join(",", _handlers[i].GetSummoners())}");
+                            HttpUtility.UrlEncode($"{string.Join(",", _handlers[i].GetSummoners())}");*/
+
+                        // Porofessor
+                        var link =
+                            $"https://porofessor.gg/en/pregame/{(_handlers[i - 1].GetRegion() ?? Region.EUW).ToString().ToLower()}/" +
+                            HttpUtility.UrlEncode($"{string.Join(",", _handlers[i - 1].GetSummoners())}");
 
                         AnsiConsole.Write(
                             new Panel(new Text($"{string.Join("\n", _handlers[i].GetSummoners())}\n\n{link}")
